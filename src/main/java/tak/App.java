@@ -211,13 +211,39 @@ public class App extends Application {
         exit.setStyle("-fx-text-fill : white; -fx-background-color: #A16F6F; -fx-font-size: 20px");
         root.setStyle("-fx-background-color: #000000");
         root.setOnKeyPressed(e->{
-            if(e.getCode() == KeyCode.ENTER){
-                if(exit.isFocused()){
-                    exit.fire();
-                }
-                if(start.isFocused()){
-                    start.fire();
-                }
+            System.out.println(e.getCode());
+            switch (e.getCode()){
+                case ENTER:
+                    if(exit.isDefaultButton()){
+                        exit.fire();
+                    }
+                    if(start.isDefaultButton()){
+                        start.fire();
+                    }
+                    break;
+                case TAB:
+                    if(exit.isDefaultButton()){
+                        start.setDefaultButton(true);
+                        exit.setDefaultButton(false);
+                    }else{
+                        exit.setDefaultButton(true);
+                        start.setDefaultButton(false);
+                    }
+                    break;
+                case LEFT:
+                    start.setDefaultButton(true);
+                    exit.setDefaultButton(false);
+                    break;
+                case RIGHT:
+                    exit.setDefaultButton(true);
+                    start.setDefaultButton(false);
+            }
+            if(exit.isDefaultButton()){
+                exit.setStyle("-fx-text-fill : white; -fx-background-color: #A16F6F; -fx-font-size: 20px; -fx-border-color: blue");
+                start.setStyle("-fx-text-fill : white; -fx-background-color: #A16F6F; -fx-font-size: 20px; -fx-border-color: black");
+            }else{
+                exit.setStyle("-fx-text-fill : white; -fx-background-color: #A16F6F; -fx-font-size: 20px; -fx-border-color: black");
+                start.setStyle("-fx-text-fill : white; -fx-background-color: #A16F6F; -fx-font-size: 20px; -fx-border-color: blue");
             }
         });
         root.getChildren().addAll(text, text1, start, exit);
@@ -230,7 +256,7 @@ public class App extends Application {
 
     private Button prepareButton(String name, EventHandler event){
         Button button = new Button(name);
-        button.setOnMouseClicked(event);
+        button.setOnAction(event);
         return button;
     }
 
